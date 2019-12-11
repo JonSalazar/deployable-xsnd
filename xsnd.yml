@@ -1,0 +1,54 @@
+---
+- hosts: server
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Create xsn user
+    user:
+      name: xsn-user
+      state: present
+
+  - name: Create xsncore directory
+    file:
+      path: /home/xsn-user/.xsncore
+      state: directory
+      owner: xsn-user
+      group: xsn-user
+    notify:
+    - Unpack xsnd
+  - name: Add conf file
+    copy:
+      src: xsn.conf
+      dest: /home/xsn-user/.xsncore/xsn.conf
+      owner: xsn-user
+      group: xsn-user
+  - name: Add the application service
+    copy:
+      src: xsnd.service
+      dest: /etc/systemd/system
+    notify:
+    - Pick up systemd changes
+    - Restart the application
+    - Enable the application to run on system startup
+
+  handlers:
+  - name: Unpack xsnd
+    unarchive:
+      src: xsn-1.0.21-x86_64-linux-gnu.tar.gz
+      dest: /home/xsn-user
+      owner: xsn-user
+      group: xsn-user
+
+  - name: Pick up systemd changes
+    systemd:
+      daemon_reload: yes
+
+  - name: Restart the application
+    systemd:
+      name: xsnd
+      state: restarted
+
+  - name: Enable the application to run on system startup
+    systemd:
+      name: xsnd
+      enabled: yes
