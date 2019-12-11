@@ -7,9 +7,12 @@
 
 ## How to run
 
-put `xsn-1.0.21-x86_64-linux-gnu.tar.gz` on root directory
-
 ```sh
+git clone git@github.com:JonSalazar/deployable-xsnd.git
+cd deployable-xsnd
+
+# put `xsn-1.0.21-x86_64-linux-gnu.tar.gz` in deployable-xsnd directory
+
 ansible-playbook -i hosts.ini xsnd.yml
 ```
 
