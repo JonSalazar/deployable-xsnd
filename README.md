@@ -6,13 +6,12 @@
 
 ## How to run
 
-Ensure to include in `~/.ssh/config` the corresponding server ip and user.
+Ensure to include in `hosts.ini` the corresponding server ip and user.
 
 Example:
 ```
-Host xsnd
-    HostName 167.71.156.125
-    User ubuntu
+[server]
+xsnd ansible_host=ubuntu@167.71.157.122
 ```
 
 ```sh

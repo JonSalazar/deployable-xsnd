@@ -41,6 +41,8 @@
       dest: /home/xsn-user/.xsncore/xsn.conf
       owner: xsn-user
       group: xsn-user
+    notify:
+    - Restart the application
 
   - name: Add the application service
     copy:

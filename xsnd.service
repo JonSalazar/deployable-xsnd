@@ -2,6 +2,7 @@
 Description=Stakenet node service
 After=network.target
 StartLimitIntervalSec=0
+
 [Service]
 Type=simple
 Restart=on-failure
