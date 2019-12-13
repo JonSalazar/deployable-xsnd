@@ -1,0 +1,30 @@
+[Unit]
+Description=Lnd xsn service
+After=xsnd
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=1
+User=lnd-user
+ExecStart=/usr/bin/env /home/lnd-user/lnd_xsn/lnd_xsn \
+    --noseedbackup \
+    --rpclisten=localhost:10007 \
+    --listen=0.0.0.0:10017 \
+    --restlisten=8007 \
+    --datadir=data \
+    --logdir=logs \
+    --nobootstrap \
+    --no-macaroons \
+    --xsncoin.active \
+    --xsncoin.mainnet \
+    --xsncoin.node=xsnd \
+    --xsnd.rpcuser=xsn \
+    --xsnd.rpcpass=replaceme \
+    --xsnd.zmqpubrawblock=tcp://127.0.0.1:18333 \
+    --xsnd.zmqpubrawtx=tcp://127.0.0.1:18334 \
+    --debuglevel=debug
+
+[Install]
+WantedBy=multi-user.target

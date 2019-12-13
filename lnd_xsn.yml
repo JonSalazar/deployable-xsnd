@@ -1,0 +1,56 @@
+---
+- hosts: server
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: Create lnd user
+    user:
+      name: lnd-user
+      state: present
+
+  - name: Create lnd_xsn directory
+    file:
+      path: /home/lnd-user/lnd_xsn
+      state: directory
+      owner: lnd-user
+      group: lnd-user
+
+  - name: Add application
+    copy:
+      src: lnd_xsn.tar.gz
+      dest: /home/lnd-user/lnd_xsn/lnd_xsn.tar.gz
+      checksum: 0c39f8034bd3fb0a088648ed2fb0ea193f29940f
+      owner: lnd-user
+      group: lnd-user
+
+  - name: Unpack the application
+    unarchive:
+      remote_src: yes
+      src: /home/lnd-user/lnd_xsn/lnd_xsn.tar.gz
+      dest: /home/lnd-user/lnd_xsn
+      owner: lnd-user
+      group: lnd-user
+
+  - name: Add the application service
+    copy:
+      src: lnd_xsn.service
+      dest: /etc/systemd/system
+    notify:
+    - Pick up systemd changes
+    - Restart the application
+    - Enable the application to run on system startup
+
+  handlers:
+  - name: Pick up systemd changes
+    systemd:
+      daemon_reload: yes
+
+  - name: Restart the application
+    systemd:
+      name: lnd_xsn
+      state: restarted
+
+  - name: Enable the application to run on system startup
+    systemd:
+      name: lnd_xsn
+      enabled: yes
