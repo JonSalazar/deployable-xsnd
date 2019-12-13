@@ -4,7 +4,7 @@
 
 - Install and configure Ansible
 
-## How to run
+## How to run xsnd
 
 Ensure to include in `hosts.ini` the corresponding server ip and user.
 
@@ -20,3 +20,9 @@ cd deployable-xsnd
 ansible-playbook -i hosts.ini xsnd.yml
 ```
 
+## How to run lnd
+
+```sh
+cd deployable-xsnd
+ansible-playbook -i hosts.ini lnd_xsn.yml
+```
